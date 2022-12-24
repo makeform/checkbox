@@ -1,1 +1,5 @@
 # @makeform/checkbox
+
+## License
+
+MIT
