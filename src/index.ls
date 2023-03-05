@@ -1,5 +1,9 @@
 module.exports =
-  pkg: name: "@makeform/checkbox", extend: name: '@makeform/common'
+  pkg:
+    name: "@makeform/checkbox", extend: name: '@makeform/common'
+    i18n:
+      en: "其它": "Other"
+      "zh-TW": "其它": "其它"
   init: (opt) -> opt.pubsub.fire \subinit, mod: mod(opt)
 mod = ({root, ctx, data, parent, t, i18n}) ->
   {ldview} = ctx
@@ -60,7 +64,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
               node.checked = ctx in ((lc.value or {}).list or [])
               if !@mod.info.meta.readonly => node.removeAttribute \disabled
               else node.setAttribute \disabled, null
-            text: text: ({node, ctx}) -> ctx
+            text: text: ({node, ctx}) -> t ctx
 
   render: -> @mod.child.view.render!
   is-empty: (_v) ->
