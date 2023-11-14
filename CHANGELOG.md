@@ -1,5 +1,10 @@
 # Change Logs
 
+## v1.0.4
+
+ - support inline mode
+
+
 ## v1.0.3
 
  - support hover tips for error hint
