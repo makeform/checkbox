@@ -1,5 +1,12 @@
 # Change Logs
 
+## v1.1.0
+
+ - support object in values
+ - support customized prompt in `other`
+ - upgrade dependencies
+
+
 ## v1.0.7
 
  - use `mf-note` to replace styling in note-related tag.

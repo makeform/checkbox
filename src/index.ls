@@ -9,6 +9,12 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
   {ldview} = ctx
   lc = {value: {list: [], other: {enabled: false, text: ""}}}
   id = "_#{Math.random!toString(36)substring(2)}"
+  getv = (t) -> if typeof(t) == \object => t.value else t
+  getlabel = (s) -> if typeof(s) == \object => t(s.label) else s
+  tolabel = (s) ->
+    r = ((lc.values or []).filter(-> getv(it) == s).0 or {}).label
+    return if r => t(r) else s
+  inside = (v) ~> v in (lc.values or []).map(-> getv it)
   init: (base) ->
     remeta = ~>
       lc.other = @mod.info.config.{}other
@@ -17,13 +23,13 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
     @on \meta, ~> remeta!
     @on \change, (v) ~>
       lc.value = (v or {})
-      lc.value.list = lc.value.[]list.filter -> it in lc.values
+      lc.value.list = lc.value.[]list.filter -> inside(it)
       @mod.child.view.render <[input option other-text other-check]>
 
     _update = (v = {}) ~>
       if !lc.value => lc.value = {}
       if v.list? => lc.value.list = v.list 
-      lc.value.list = lc.value.list.filter -> it in lc.values
+      lc.value.list = lc.value.list.filter -> inside(it)
       if v.other =>
         if v.other.enabled? => lc.value.{}other.enabled = v.other.enabled
         if v.other.text? => lc.value.{}other.text = v.other.text
@@ -36,7 +42,10 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
         input: "other-text": ({node}) -> _update {other: {text: node.value}}
       text:
         content: ({node}) ~>
-          if @is-empty! => 'n/a' else (@content! or []).map(->t(it)).join(', ') or 'n/a'
+          if @is-empty! => 'n/a' else (@content! or []).map(->tolabel(it)).join(', ') or 'n/a'
+        "other-prompt": ({node}) ~>
+          if (lc.other or {}).prompt => return t(that)
+          else return t("其它")
       handler:
         input: ({node}) ~> node.classList.toggle \text-danger, @status! == 2
         other: ({node}) ~> node.classList.toggle \d-none, !lc.other.enabled
@@ -50,7 +59,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
           node.value = (lc.{}value.{}other.text or '')
         option:
           list: -> lc.values or []
-          key: -> it
+          key: -> getv it
           view:
             action: change: checkbox: ({node, ctx}) ~>
               ret = Array.from(root.querySelectorAll 'input[type=checkbox]')
@@ -60,17 +69,17 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
               _update v
             handler: checkbox: ({node, ctx}) ~>
               node.setAttribute \name, id
-              node.setAttribute \value, ctx
-              node.checked = ctx in ((lc.value or {}).list or [])
+              node.setAttribute \value, getv(ctx)
+              node.checked = getv(ctx) in ((lc.value or {}).list or [])
               if !@mod.info.meta.readonly => node.removeAttribute \disabled
               else node.setAttribute \disabled, null
-            text: text: ({node, ctx}) -> t ctx
+            text: text: ({node, ctx}) -> getlabel(ctx)
 
   render: -> @mod.child.view.render!
   is-empty: (_v) ->
     v = @content(_v) or []
     v = v.filter ~>
-      if (it in lc.values) => return true
+      if inside(it) => return true
       if !_v.{}other.enabled => return false
       return it == _v.other.text
     ret = if Array.isArray(v) => !v.length else !v
