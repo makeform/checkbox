@@ -1,5 +1,10 @@
 # Change Logs
 
+## v1.2.0
+
+ - add `layout` option for choosing layout mode (`inline` or `block`) of options.
+
+
 ## v1.1.0
 
  - support object in values

@@ -67,12 +67,15 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
                 .map -> it.value
               v = {list: ret}
               _update v
-            handler: checkbox: ({node, ctx}) ~>
-              node.setAttribute \name, id
-              node.setAttribute \value, getv(ctx)
-              node.checked = getv(ctx) in ((lc.value or {}).list or [])
-              if !@mod.info.meta.readonly => node.removeAttribute \disabled
-              else node.setAttribute \disabled, null
+            handler:
+              "@": ({node}) ~>
+                node.style.flexBasis = if (@mod.info.config or {}).layout == \block => "100%" else ''
+              checkbox: ({node, ctx}) ~>
+                node.setAttribute \name, id
+                node.setAttribute \value, getv(ctx)
+                node.checked = getv(ctx) in ((lc.value or {}).list or [])
+                if !@mod.info.meta.readonly => node.removeAttribute \disabled
+                else node.setAttribute \disabled, null
             text: text: ({node, ctx}) -> getlabel(ctx)
 
   render: -> @mod.child.view.render!

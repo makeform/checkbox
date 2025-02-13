@@ -9,7 +9,7 @@
  - `other`: default null. An object for config of `other` option, with following fields:
    - `enabled`: default false. should `other` option be shown.
    - `prompt`: default `其它` or `Other`. Prompt text for `other` option.
-
+ - `layout`: default `inline`. decide how to layout options. possible values: either `inline` or `block`.
 
 ## License
 
