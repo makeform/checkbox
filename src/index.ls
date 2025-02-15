@@ -12,8 +12,8 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
   getv = (t) -> if typeof(t) == \object => t.value else t
   getlabel = (s) -> if typeof(s) == \object => t(s.label) else t(s)
   tolabel = (s) ->
-    r = ((lc.values or []).filter(-> getv(it) == s).0 or {})
-    r = r.label or r
+    r = (lc.values or []).filter(-> getv(it) == s).0
+    r = if r and r.label => r.label else r
     return if r => t(r) else s
 
   inside = (v) ~> v in (lc.values or []).map(-> getv it)
