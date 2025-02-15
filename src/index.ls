@@ -10,10 +10,12 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
   lc = {value: {list: [], other: {enabled: false, text: ""}}}
   id = "_#{Math.random!toString(36)substring(2)}"
   getv = (t) -> if typeof(t) == \object => t.value else t
-  getlabel = (s) -> if typeof(s) == \object => t(s.label) else s
+  getlabel = (s) -> if typeof(s) == \object => t(s.label) else t(s)
   tolabel = (s) ->
-    r = ((lc.values or []).filter(-> getv(it) == s).0 or {}).label
+    r = ((lc.values or []).filter(-> getv(it) == s).0 or {})
+    r = r.label or r
     return if r => t(r) else s
+
   inside = (v) ~> v in (lc.values or []).map(-> getv it)
   init: (base) ->
     remeta = ~>

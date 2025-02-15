@@ -1,5 +1,10 @@
 # Change Logs
 
+## v1.2.1
+
+ - fix bug: values are not translated in view mode
+
+
 ## v1.2.0
 
  - add `layout` option for choosing layout mode (`inline` or `block`) of options.
