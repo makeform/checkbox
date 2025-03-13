@@ -1,5 +1,11 @@
 # Change Logs
 
+## v1.3.1
+
+ - fix bug: nothing is displayed when using `full` view mode.
+ - remove unncessary log
+
+
 ## v1.3.0
 
  - add missing `base` in widget root element for toggleing `form-group` when needed.

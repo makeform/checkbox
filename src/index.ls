@@ -44,14 +44,14 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
         click: "other-check": ({node}) -> _update {other: {enabled: !!node.checked }}
         input: "other-text": ({node}) -> _update {other: {text: node.value}}
       text:
-        content: ({node}) ~>
-          if @is-empty! => 'n/a' else (@content! or []).map(->tolabel(it)).join(', ') or 'n/a'
         "other-prompt": ({node}) ~>
           if (lc.other or {}).prompt => return t(that)
           else return t("其它")
       handler:
         content: ({node}) ~>
-          hidden = lc.viewopt.mode and lc.viewopt.mode != \text
+          txt = if @is-empty! => 'n/a' else (@content! or []).map(->tolabel(it)).join(', ') or 'n/a'
+          node.textContent = txt
+          hidden = !!lc.viewopt.mode and lc.viewopt.mode != \text
           node.classList.toggle \d-none, hidden
         input: ({node}) ~>
           node.classList.toggle \text-danger, @status! == 2
@@ -67,9 +67,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
           else node.setAttribute \readonly, null
           node.value = (lc.{}value.{}other.text or '')
         option:
-          list: ->
-            console.log \here, lc.values
-            lc.values or []
+          list: -> lc.values or []
           key: -> getv it
           view:
             action: change: checkbox: ({node, ctx}) ~>
