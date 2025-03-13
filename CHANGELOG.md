@@ -1,5 +1,11 @@
 # Change Logs
 
+## v1.3.0
+
+ - add missing `base` in widget root element for toggleing `form-group` when needed.
+ - add `view.mode` to show complete options in view mode if necessary.
+
+
 ## v1.2.2
 
  - fix bug: empty object passed to translator when no matched value found.

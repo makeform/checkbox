@@ -13,6 +13,10 @@ Checkbox style widget for users to make multiple choices from multiple options.
    - `enabled`: default false. should `other` option be shown.
    - `prompt`: default `其它` or `Other`. Prompt text for `other` option.
  - `layout`: default `inline`. decide how to layout options. possible values: either `inline` or `block`.
+ - `view`: view mode related configs.
+   - `mode`: either `text` or `full`. default `text`.
+     - `text`: options are shown as concated text. `n/a` if no option is chosen.
+     - `full`: all options will be shown with checkbox checked for chosen options.
 
 
 ## License

@@ -21,6 +21,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
     remeta = ~>
       lc.other = @mod.info.config.{}other
       lc.values = (@mod.info.config or {}).values or []
+      lc.viewopt = (@mod.info.config or {}).view or {}
     remeta!
     @on \meta, ~> remeta!
     @on \change, (v) ~>
@@ -49,7 +50,13 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
           if (lc.other or {}).prompt => return t(that)
           else return t("其它")
       handler:
-        input: ({node}) ~> node.classList.toggle \text-danger, @status! == 2
+        content: ({node}) ~>
+          hidden = lc.viewopt.mode and lc.viewopt.mode != \text
+          node.classList.toggle \d-none, hidden
+        input: ({node}) ~>
+          node.classList.toggle \text-danger, @status! == 2
+          show = lc.viewopt.mode and lc.viewopt.mode == \full
+          node.classList.toggle \m-edit, !show
         other: ({node}) ~> node.classList.toggle \d-none, !lc.other.enabled
         "other-check": ({node}) ~> 
           if !@mod.info.meta.readonly => node.removeAttribute \disabled
@@ -60,7 +67,9 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
           else node.setAttribute \readonly, null
           node.value = (lc.{}value.{}other.text or '')
         option:
-          list: -> lc.values or []
+          list: ->
+            console.log \here, lc.values
+            lc.values or []
           key: -> getv it
           view:
             action: change: checkbox: ({node, ctx}) ~>
@@ -76,8 +85,12 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
                 node.setAttribute \name, id
                 node.setAttribute \value, getv(ctx)
                 node.checked = getv(ctx) in ((lc.value or {}).list or [])
-                if !@mod.info.meta.readonly => node.removeAttribute \disabled
-                else node.setAttribute \disabled, null
+                is-full-mode = lc.viewopt.mode and lc.viewopt.mode == \full
+                is-view-mode = @mode! == \view
+                readonly = if is-view-mode and is-full-mode => true
+                else if !@mod.info.meta.readonly => false else true
+                if readonly => node.setAttribute \disabled, ""
+                else node.removeAttribute \disabled
             text: text: ({node, ctx}) -> getlabel(ctx)
 
   render: -> @mod.child.view.render!
