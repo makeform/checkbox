@@ -1,5 +1,8 @@
 # @makeform/checkbox
 
+Checkbox style widget for users to make multiple choices from multiple options.
+
+
 ## Configs
 
  - `values`: Array of string/objects for options in this widget.
@@ -10,6 +13,7 @@
    - `enabled`: default false. should `other` option be shown.
    - `prompt`: default `其它` or `Other`. Prompt text for `other` option.
  - `layout`: default `inline`. decide how to layout options. possible values: either `inline` or `block`.
+
 
 ## License
 
