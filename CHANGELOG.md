@@ -1,5 +1,10 @@
 # Change Logs
 
+## v2.0.0 (upcoming)
+
+ - tweak DOM based on updated `@makeform/common` DOM structure.
+
+
 ## v1.3.1
 
  - fix bug: nothing is displayed when using `full` view mode.
