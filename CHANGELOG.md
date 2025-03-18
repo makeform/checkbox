@@ -3,6 +3,7 @@
 ## v2.0.0 (upcoming)
 
  - tweak DOM based on updated `@makeform/common` DOM structure.
+ - tweak option layout
 
 
 ## v1.3.1
