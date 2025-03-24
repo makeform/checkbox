@@ -4,6 +4,7 @@
 
  - tweak DOM based on updated `@makeform/common` DOM structure.
  - tweak option layout
+ - enforce other text if other is checked.
 
 
 ## v1.3.1

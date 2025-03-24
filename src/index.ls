@@ -2,8 +2,12 @@ module.exports =
   pkg:
     name: "@makeform/checkbox", extend: name: '@makeform/common'
     i18n:
-      en: "其它": "Other"
-      "zh-TW": "其它": "其它"
+      en:
+        "其它": "Other"
+        "other-error": "Other checked, but empty"
+      "zh-TW":
+        "其它": "其它"
+        "other-error": "勾選了其它，但未填"
   init: (opt) -> opt.pubsub.fire \subinit, mod: mod(opt)
 mod = ({root, ctx, data, parent, t, i18n}) ->
   {ldview} = ctx
@@ -104,4 +108,9 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
     ret = (v.list or [])
     other = if lc.other.enabled and v.{}other.enabled and v.other.text => [v.other.text] else []
     ret = ret ++ other
-
+  validate: ->
+    Promise.resolve!then ~>
+      v = @value!
+      if v and (v.other or {}).enabled and !(v.other or {}).text =>
+        return ["other-error"]
+      return
