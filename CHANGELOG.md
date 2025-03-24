@@ -4,7 +4,7 @@
 
  - tweak DOM based on updated `@makeform/common` DOM structure.
  - tweak option layout
- - enforce other text if other is checked.
+ - enforce other text if other is checked when `requireOnCheck` is true.
 
 
 ## v1.3.1

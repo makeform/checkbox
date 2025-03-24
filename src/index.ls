@@ -110,6 +110,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
     ret = ret ++ other
   validate: ->
     Promise.resolve!then ~>
+      if !((@mod.info.config or {}).other or {}).require-on-check => return
       v = @value!
       if v and (v.other or {}).enabled and !(v.other or {}).text =>
         return ["other-error"]

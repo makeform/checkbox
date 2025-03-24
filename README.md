@@ -12,6 +12,9 @@ Checkbox style widget for users to make multiple choices from multiple options.
  - `other`: default null. An object for config of `other` option, with following fields:
    - `enabled`: default false. should `other` option be shown.
    - `prompt`: default `其它` or `Other`. Prompt text for `other` option.
+   - `requireOnCheck`: default false.
+     - when true, the `Other` field must be filled when `Other` is checked;
+       otherwise, this field will be considered invalid.
  - `layout`: default `inline`. decide how to layout options. possible values: either `inline` or `block`.
  - `view`: view mode related configs.
    - `mode`: either `text` or `full`. default `text`.
