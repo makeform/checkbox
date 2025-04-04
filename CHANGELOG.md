@@ -1,5 +1,10 @@
 # Change Logs
 
+## v2.0.1
+
+ - field is now considered 'not empty' if other is checked and `other.requireOnCheck` is true.
+
+
 ## v2.0.0
 
  - tweak DOM based on updated `@makeform/common` DOM structure.

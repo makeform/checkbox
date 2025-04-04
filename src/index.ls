@@ -103,6 +103,11 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
       if !_v.{}other.enabled => return false
       return it == _v.other.text
     ret = if Array.isArray(v) => !v.length else !v
+    # we consider this widget as 'not empty' if other is checked when `requireOnCheck` is enabled.
+    # while it's technically 'empty', this help trigger `validate` below,
+    # which will still check if the `requireOnCheck` criteria is met,
+    # so widget will still be invalid if it's required.
+    if ((@mod.info.config or {}).other or {}).require-on-check and _v and _v.{}other.enabled => return false
     ret
   content: (v = {}) ->
     ret = (v.list or [])
@@ -112,6 +117,8 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
     Promise.resolve!then ~>
       if !((@mod.info.config or {}).other or {}).require-on-check => return
       v = @value!
+      # we count on this check for `is-required` since we consider a widget as not empty
+      # if it's `other` option is checked (even if the other value isn't filled yet)
       if v and (v.other or {}).enabled and !(v.other or {}).text =>
         return ["other-error"]
       return
