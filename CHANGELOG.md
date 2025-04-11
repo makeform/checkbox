@@ -1,5 +1,10 @@
 # Change Logs
 
+## v2.0.2
+
+ - fix bug: content in view mode isn't translated
+
+
 ## v2.0.1
 
  - field is now considered 'not empty' if other is checked and `other.requireOnCheck` is true.

@@ -18,7 +18,7 @@ mod = ({root, ctx, data, parent, t, i18n}) ->
   tolabel = (s) ->
     r = (lc.values or []).filter(-> getv(it) == s).0
     r = if r and r.label => r.label else r
-    return if r => t(r) else s
+    return if r => t(r) else if typeof(s) == \string => t(s) else s
 
   inside = (v) ~> v in (lc.values or []).map(-> getv it)
   init: (base) ->
