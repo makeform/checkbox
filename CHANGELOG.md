@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.0.0
+
+ - support `@grantdash/composer` host
+
+
 ## v2.0.2
 
  - fix bug: content in view mode isn't translated
