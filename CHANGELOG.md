@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.0.1
+
+ - use cps-hover-host and cps-hover-reveal to replace cps-hover class
+
+
 ## v3.0.0
 
  - support `@grantdash/composer` host
