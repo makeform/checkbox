@@ -6,11 +6,11 @@ div
       //- flex box on label to separate text from radiobox even if text wrapped
       //- @makeform/radio also add line-height 1.25em in label tag, we can align both widgets.
       .d-flex.g-2.flex-wrap
-        label.mb-0.mr-2.clickable.d-flex(ld-each="option")
+        label.mb-0.mr-2.clickable.d-flex.cps-hover-host(ld-each="option")
           input.mr-1(ld="checkbox",type="checkbox")
           .d-flex.align-items-center
             span(ld="text")
-            i.i-close.text-sm.ml-1.cps-hover.cps-remove(ld="remove")
+            i.i-close.text-sm.ml-1.cps-hover-reveal.cps-remove(ld="remove")
         .clickable.rounded-sm.bg-dark.cps-add(ld="add") ＋
       .mt-2(ld="other"): label.clickable.d-flex.align-items-center
         input.mr-1(ld="other-check",type="checkbox")
