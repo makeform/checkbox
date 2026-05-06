@@ -38,6 +38,10 @@ mod = ({root, ctx, data, parent, t, i18n, host}) ->
       * key: keygen!, label: hitf!wrap "#{i18n.language}": 'Option 3'
       ]
   init: ->
+    @mod.valdef = "@plotdb/form:valdef/choice"
+    @mod.valspec = ~>
+      values: lc.values.map (v) ->
+        key: v.key or v, value: v.value or v, label: hitf!totext(v.label or v.value or v.key or v)
     tolabel = (s) ->
       r = (lc.values or []).filter(-> getkey(it) == s).0
       r = if r and r.label => r.label else r
@@ -82,7 +86,13 @@ mod = ({root, ctx, data, parent, t, i18n, host}) ->
           (if !(p = hitf!get!?config?other?prompt) => ''
           else if typeof(p) != \string => p else p) or \其它
         content: ({node}) ~>
-          txt = if @is-empty! => 'n/a' else (@content! or []).map(->tolabel(it)).join(', ') or 'n/a'
+          c = @content!
+          txt = if @is-empty! => 'n/a'
+            else if Array.isArray(c) => c.map(->tolabel it).join(', ') or 'n/a'
+            else
+              items = (c?list or []).map(->tolabel it)
+              if c?other?enabled and c?other?text => items.push c.other.text
+              items.join(', ').trim! or 'n/a'
           node.textContent = txt
           hidden = !!lc.viewopt.mode and lc.viewopt.mode != \text
           node.classList.toggle \d-none, hidden
@@ -140,22 +150,33 @@ mod = ({root, ctx, data, parent, t, i18n, host}) ->
 
   render: -> @mod.child.view.render!
   is-empty: (_v) ->
-    v = @content(_v) or []
-    v = v.filter ~>
-      if inside(it) => return true
-      if !_v.{}other.enabled => return false
-      return it == _v.other.text
-    ret = if Array.isArray(v) => !v.length else !v
+    v = @content(_v)
+    ret = if Array.isArray(v)
+      filtered = v.filter ~>
+        if inside(it) => return true
+        if !_v?other?enabled => return false
+        it == _v.other.text
+      !filtered.length
+    else
+      filtered = v.list.filter -> inside it
+      has-other = _v?other?enabled and _v.other.text
+      !filtered.length and !has-other
     # we consider this widget as 'not empty' if other is checked when `requireOnCheck` is enabled.
     # while it's technically 'empty', this help trigger `validate` below,
     # which will still check if the `requireOnCheck` criteria is met,
     # so widget will still be invalid if it's required.
-    if ((@mod.info.config or {}).other or {}).require-on-check and _v and _v.{}other.enabled => return false
+    if @mod.info?config?other?require-on-check and _v and _v.other?enabled => return false
     ret
   content: (v = {}) ->
-    ret = (v.list or [])
-    other = if lc.other.enabled and v.{}other.enabled and v.other.text => [v.other.text] else []
-    ret = ret ++ other
+    is-new = (v.list or []).some -> it?key?
+    if !is-new
+      ret = v.list or []
+      other = if lc.other.enabled and v.other?enabled and v.other.text => [v.other.text] else []
+      return ret ++ other
+    to-key = (item) -> if typeof item == \string => item else item.key or item.value or ''
+    to-key= -> if !it => '' else it.key or it.value or (if typeof(it) == \string => it else '')
+    list = (v.list or []).filter(->it).map to-key
+    {list, other: v.other or {}}
   validate: ->
     Promise.resolve!then ~>
       if !((@mod.info.config or {}).other or {}).require-on-check => return

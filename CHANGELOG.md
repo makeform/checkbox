@@ -1,5 +1,11 @@
 # Change Logs
 
+## v3.1.0
+
+ - support valdef and valspec
+ - support object returned content
+
+
 ## v3.0.1
 
  - use cps-hover-host and cps-hover-reveal to replace cps-hover class
