@@ -71,9 +71,7 @@ mod = ({root, ctx, data, parent, t, i18n, host}) ->
       root: root
       action:
         click:
-          "other-prompt": hitf!edit obj: ({ctx}) ->
-            o = hitf!get!{}config{}other
-            o.prompt = if typeof(o.prompt) == \string => {} else (o.prompt or {})
+          "other-prompt": hitf!edit path: "config.other.prompt"
           "other-check": ({node}) -> _update {other: {enabled: !!node.checked }}
           add: ({node, views}) ~>
             new-entry = key: keygen!, label: hitf!wrap "#{i18n.language}": 'Untitled'
@@ -132,7 +130,7 @@ mod = ({root, ctx, data, parent, t, i18n, host}) ->
                   cfg = hitf!get!{}config
                   cfg.values = cfg.[]values.filter -> getkey(it) != getkey(ctx)
                   hitf!set!
-                text: hitf!edit {obj: ({ctx}) -> ctx.{}label}
+                text: hitf!edit path: \label, from-ctx: true
             handler:
               "@": ({node}) ~>
                 node.style.flexBasis = if (@mod.info.config or {}).layout == \block => "100%" else ''
