@@ -1,5 +1,11 @@
 # Change Logs
 
+## v3.1.1
+
+ - fix bug: string can't be edited. use `fromCtx` to simplify this implementation
+ - upgrade dependencies
+
+
 ## v3.1.0
 
  - support valdef and valspec
